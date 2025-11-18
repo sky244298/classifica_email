@@ -23,19 +23,38 @@ def extract_text_from_pdf(file):
     return text
 
 def classify_with_gpt(text):  # Envia o conteúdo do email para o modelo GPT e retorna "Produtivo" ou "Improdutivo".
-    ...
+    
     prompt = f"""
-Você é um assistente que classifica emails para uma empresa do setor financeiro.
+Você é um assistente que classifica emails recebidos por uma EMPRESA DO SETOR FINANCEIRO
+(um banco digital).
 
-Classifique o email a seguir como exatamente uma destas opções:
-- Produtivo
-- Improdutivo
+Seu objetivo é dizer se o email é relevante para o trabalho do banco ou não.
 
-Email:
+Definições IMPORTANTES:
+
+- Classifique como **Produtivo** apenas se o email falar de:
+  - conta bancária, cartão, fatura, limite, empréstimo, financiamento,
+    investimento, saldo, extrato, senha, acesso ao app, cadastro,
+    problemas técnicos relacionados aos serviços do banco,
+    dúvidas sobre produtos financeiros, acompanhamento de chamados etc.
+
+- Classifique como **Improdutivo** se o email for:
+  - propaganda ou oferta de produtos que não são do banco (ex.: venda de guitarra),
+  - correntes, spam, convites genéricos,
+  - mensagens de felicitação (bom dia, feliz aniversário, feliz natal),
+  - agradecimentos simples,
+  - qualquer assunto que NÃO exija ação da equipe do banco
+    em relação aos serviços financeiros da empresa.
+
+Email a ser classificado:
 \"\"\"{text}\"\"\"
 
-Responda apenas com UMA palavra: Produtivo ou Improdutivo.
+Responda apenas com UMA palavra, exatamente:
+- Produtivo
+ou
+- Improdutivo
 """
+
     response = client.responses.create(
         model="gpt-4.1-mini",
         input=prompt,
@@ -46,7 +65,8 @@ Responda apenas com UMA palavra: Produtivo ou Improdutivo.
     if "improdutivo" in raw.lower():
         return "Improdutivo"
     # fallback caso venha algo inesperado
-    return "Produtivo"
+    return "Improdutivo"
+
 
 def reply_with_gpt(category, text): # Gera uma resposta automática em português com base na categoria e no texto original. 
     prompt = f"""
@@ -149,4 +169,5 @@ def index():
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
