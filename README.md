@@ -31,6 +31,6 @@ No Windows (PowerShell):
 
 Quando um email é enviado pela interface, o backend extrai o texto (de arquivo .txt, .pdf ou da caixa de texto), e chama a função classify_email. Essa função tenta classificar o conteúdo usando o modelo da OpenAI com o prompt preparado para retornar apenas “Produtivo” ou “Improdutivo”. Em seguida, a função suggest_reply gera uma resposta automática com tom profissional, adaptada à categoria: se o email for produtivo, a resposta reconhece o pedido e informa que o caso está em análise; se for improdutivo, agradece a mensagem e encerra de forma cordial. Caso a chamada à API falhe, o código utiliza uma lógica simples baseada em palavras-chave para decidir a categoria e fornece respostas padrão.
 
-Deploy na nuvem
+-Deploy na nuvem
 
 A aplicação foi implantada no Render como um Web Service em Python 3. O serviço lê o código diretamente do repositório GitHub, instala as dependências via requirements.txt e expõe a aplicação Flask em uma URL pública. A chave da OpenAI foi configurada no painel do Render como variável de ambiente OPENAI_API_KEY, permitindo o uso da API de IA sem expor o segredo no código fonte.
