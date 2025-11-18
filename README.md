@@ -36,3 +36,52 @@ Quando um email é enviado pela interface, o backend extrai o texto (de arquivo 
 A aplicação foi implantada no Render como um Web Service em Python 3. O serviço lê o código diretamente do repositório GitHub, instala as dependências via requirements.txt e expõe a aplicação Flask em uma URL pública. A chave da OpenAI foi configurada no painel do Render como variável de ambiente OPENAI_API_KEY, permitindo o uso da API de IA sem expor o segredo no código fonte.
 Pode ser acessada aqui:
             https://classifica-email-krnh.onrender.com
+
+
+
+-AI-Based Email Classifier
+
+This web application was developed to help a financial-sector company automate the reading of emails by classifying them as either productive or unproductive and generating an appropriate automatic reply. The system accepts text input or .txt/.pdf files, sends the content to an OpenAI GPT model, and returns both the classification and a suggested response.
+
+The web interface is simple: the user uploads a file or pastes the email content, clicks “Classify,” and receives the assigned category and an auto-generated response. The goal is to reduce the team’s time spent on repetitive triage and initial responses.
+
+-Technologies Used
+
+The application is built in Python using Flask for the backend and HTML/CSS for the interface. PDF processing is handled with the pdfplumber library. Classification and reply generation are performed via the OpenAI API (gpt-4.1-mini) with a keyword-based fallback mechanism in case the API call fails. All dependencies are listed in the requirements.txt file.
+
+-How to Run Locally
+
+To run the project locally, Python must be installed.
+
+1-Clone the repository and enter the project folder (where app.py, requirements.txt, templates/, and static/ are located).
+
+2-(Optional but recommended) Create a virtual environment and install dependencies:
+
+            pip install -r requirements.txt
+
+
+3-Set the environment variable with your OpenAI API key:
+
+Windows (PowerShell):
+
+            setx OPENAI_API_KEY "your_key_here"
+
+
+4-Start the Flask server:
+
+            python app.py
+
+
+5-Open the displayed address in your browser (usually http://127.0.0.1:5000
+).
+
+-How the Application Works
+
+When an email is submitted, the backend extracts the text (from a .txt/.pdf file or from the text box) and calls the classify_email function. This function attempts to classify the content using the OpenAI model with a prompt designed to return only “Produtivo” or “Improdutivo.” Then, the suggest_reply function generates a professional automatic response based on the classification. If the API request fails, the system falls back to a simple keyword-based rule and provides default responses.
+
+-Cloud Deployment
+
+The application was deployed on Render as a Python Web Service. Render pulls the code directly from the GitHub repository, installs the dependencies from requirements.txt, and exposes the Flask application at a public URL. The OpenAI API key was added in Render’s dashboard as the environment variable OPENAI_API_KEY, ensuring the secret is not exposed in the source code.
+
+Live application:
+https://classifica-email-krnh.onrender.com
